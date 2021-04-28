@@ -1,4 +1,4 @@
-var roleGunner1 = {
+var roleGunner1-4 = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
@@ -21,9 +21,9 @@ var roleGunner1 = {
             }
         }
         if(!creep.memory.fighting) {
-        creep.moveTo(Game.flags.FlagGunner1);
+        creep.moveTo(Game.flags.FlagGunner1-4);
         }
     }
 };
 
-module.exports = roleGunner1;
+module.exports = roleGunner1-4;
