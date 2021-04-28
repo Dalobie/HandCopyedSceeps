@@ -3,6 +3,15 @@ var roleHarvester = {
     /** @param {Creep} creep **/
     run: function(creep) {
         
+        var maxEnergyCapacity = Game.rooms.W22S58.energyCapacityAvailable;
+        var availableEnergy = Game.rooms.W22S58.energyAvailable;
+        
+        // kill self if done
+        if (Game.creeps['miner1'] && Game.rooms.W22S58.energyAvailable >= 550) {
+            console.log('miner1 is back online and base is no longer in danger my work here is done.');
+            creep.suicide();
+        }
+        
         
 	    if(creep.memory.transfering && creep.store[RESOURCE_ENERGY] == 0) {
             creep.memory.transfering = false;
@@ -64,7 +73,7 @@ var roleHarvester = {
             }
         }
         else {
-            var source = Game.getObjectById('a3ea0773646985b');
+            var source = Game.getObjectById('5bbcabba9099fc012e6342c6');
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(source, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
@@ -75,7 +84,7 @@ var roleHarvester = {
             }
 	    }
 	    else {
-	        var source = Game.getObjectById('a3ea0773646985b');
+	        var source = Game.getObjectById('5bbcabba9099fc012e6342c6');
             if(creep.harvest(source) == ERR_NOT_IN_RANGE) {
                 (creep.moveTo(source), {visualizePathStyle: {stroke: '#ffaa00'}});
             }
