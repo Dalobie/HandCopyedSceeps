@@ -3,12 +3,13 @@ var roleUpgrader = {
     /** @param {Creep} creep **/
     run: function(creep) {
         
-        var withdrawfrom = Game.getObjectById('608061833769c56803457f34');
+        //var withdrawfrom = Game.getObjectById('608061833769c56803457f34');
+        
+        var container1 = Game.getObjectById('60851c59d4d94462fc69c451');
         /**
-        var container1 = Game.getObjectById('6080f91c84b96934256bf6fd');
         var container2 = Game.getObjectById('608061833769c56803457f34');
         
-        if(container2.store[RESOURCE_ENERGY] > (container2.store.getCapacity(RESOURCE_ENERGY)/2)) {
+        if(container2.store[RESOURCE_ENERGY] > 1) {
             var withdrawfrom = container2;
         }
         else if(container1.store[RESOURCE_ENERGY] > (container1.store.getCapacity(RESOURCE_ENERGY)/2)) {
@@ -33,10 +34,11 @@ var roleUpgrader = {
             }
         }
         else {
-            if(creep.withdraw(withdrawfrom, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(withdrawfrom, {visualizePathStyle: {stroke: '#ffaa00'}});
+            if(creep.withdraw(container1, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(container1, {visualizePathStyle: {stroke: '#ffaa00'}});
             }
         }
+        
 	}
 };
 
