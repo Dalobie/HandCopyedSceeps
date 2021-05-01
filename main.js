@@ -1,3 +1,11 @@
+var rampWall1 = 2000000;
+var rampWall2 = 2600000;
+var rampWall3 = 3000000;
+var numOfUpgraders = 1;
+
+
+
+
 var roleMiner1= require('role.miner1');
 var roleMiner2= require('role.miner2');
 
@@ -11,9 +19,10 @@ var roleHarvester = require('role.harvester');
 
 var roleUpgrader = require('role.upgrader');
 
-var roleFixit = require('role.fixit');
+
 
 var roleFeeder = require('role.feeder');
+var roleFeeder2 = require('role.feeder2');
 
 var roleFighter = require('role.fighter');
 
@@ -28,6 +37,7 @@ var roleGunner4 = require('role.gunner4');
 
 module.exports.loop = function () {
     
+    
     let maxEnergyCapacity = Game.rooms.W22S58.energyCapacityAvailable;
     let availableEnergy = Game.rooms.W22S58.energyAvailable;
     
@@ -37,6 +47,7 @@ module.exports.loop = function () {
 
     // tower
     var towers = Game.getObjectById('60820889f2a9709f4b92d1d5');
+    let Healer = Game.getObjectById('6089febb00c99ac3ccf1f39b');
     if(towers) {
         //Heal
 		
@@ -53,6 +64,9 @@ module.exports.loop = function () {
 		if(closestHostile) {
 			towers.attack(closestHostile);
 		}
+		
+		
+		
         // Find Valid Structure
         var validtarget = towers.pos.findClosestByRange(FIND_STRUCTURES, {
 			filter: (structure) => {
@@ -71,17 +85,25 @@ module.exports.loop = function () {
         });
         var subsubtarget = towers.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
-			    return (structure.structureType == STRUCTURE_WALL ) && 
-			    structure.hits < 2500000 ;
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL ) && 
+			    structure.hits < rampWall1 ;
 			}
         });
         var subsubsubtarget = towers.pos.findClosestByRange(FIND_STRUCTURES, {
             filter: (structure) => {
-			    return (structure.structureType == STRUCTURE_WALL ) && 
-			    structure.hits < 3000000 ;
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL  ) && 
+			    structure.hits < rampWall2 ;
 			}
         });
-        
+        var subSubSubSubTarget = towers.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL  ) && 
+			    structure.hits < rampWall3 ;
+			}
+        });
         
         if(validtarget && !closestHostile) {
 			towers.repair(validtarget);
@@ -95,8 +117,91 @@ module.exports.loop = function () {
 		if(!validtarget && !subtarget && !subsubtarget && subsubsubtarget && !closestHostile) {
 			towers.repair(subsubsubtarget);
         }
-			
+		if(!validtarget && !subtarget && !subsubtarget && !subsubsubtarget && subSubSubSubTarget && !closestHostile) {
+			towers.repair(subSubSubSubTarget);
+        }
+        
     }
+    
+    // tower
+    var tower2 = Game.getObjectById('608b04c5218537ffa84aeea9');
+    if(tower2) {
+        //Heal
+		
+		var healCreep = tower2.pos.findClosestByRange(FIND_MY_CREEPS, {
+            filter: (myCreeps) => {
+            return myCreeps.hits < myCreeps.hitsMax;
+            }
+        });
+        if(healCreep) {
+            tower2.heal(healCreep);
+        }
+        
+        var closestHostile = tower2.pos.findClosestByRange(FIND_HOSTILE_CREEPS);
+		if(closestHostile) {
+			tower2.attack(closestHostile);
+		}
+		
+		
+		
+        // Find Valid Structure
+        var validtarget = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+			filter: (structure) => {
+				return (structure.structureType == STRUCTURE_CONTAINER ) && 
+				structure.hits < 5000 ;
+			}
+		});
+		// Nothing to do
+        
+        var subtarget = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+			    return (structure.structureType == STRUCTURE_CONTAINER ) && 
+			    structure.hits < 250000 ;
+			}
+        });
+        var subsubtarget = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL ) && 
+			    structure.hits < rampWall1 ;
+			}
+        });
+        var subsubsubtarget = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL  ) && 
+			    structure.hits < rampWall2 ;
+			}
+        });
+        var subSubSubSubTarget = tower2.pos.findClosestByRange(FIND_STRUCTURES, {
+            filter: (structure) => {
+			    return (structure.structureType == STRUCTURE_RAMPART ||
+				    	structure.structureType == STRUCTURE_WALL  ) && 
+			    structure.hits < rampWall3 ;
+			}
+        });
+        
+        if(validtarget && !closestHostile) {
+			tower2.repair(validtarget);
+		}
+        if(!validtarget && subtarget && !closestHostile) {
+			tower2.repair(subtarget);
+        }
+        if(!validtarget && !subtarget && subsubtarget && !closestHostile) {
+			tower2.repair(subsubtarget);
+        }
+		if(!validtarget && !subtarget && !subsubtarget && subsubsubtarget && !closestHostile) {
+			tower2.repair(subsubsubtarget);
+        }
+		if(!validtarget && !subtarget && !subsubtarget && !subsubsubtarget && subSubSubSubTarget && !closestHostile) {
+			tower2.repair(subSubSubSubTarget);
+        }
+        
+    }
+    //================================================================================================================================<<<
+    
+    
+    
     
     // Death Check
     for(var name in Memory.creeps) {
@@ -162,7 +267,7 @@ module.exports.loop = function () {
     
     // Spawn Upgrader
     var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
-    if(upgraders.length < 3 && miner2.length > 0 && miner1.length > 0 && availableEnergy >= 550) {
+    if(upgraders.length < 1 && miner2.length > 0 && miner1.length > 0 && availableEnergy >= 550) {
         var newName = 'Upgrader' + Game.time;
         console.log('Need new Upgrader: ' + newName);
         Game.spawns['Spawn1'].spawnCreep([WORK,WORK,CARRY,MOVE,MOVE,MOVE], newName, 
@@ -176,6 +281,14 @@ module.exports.loop = function () {
         console.log('Need new feeder: ' + newName);
         Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], newName, 
             {memory: {role: 'feeder'}});
+    }
+    // Spawn Feeder2
+    var feeder2 = _.filter(Game.creeps, (creep) => creep.memory.role == 'feeder2');
+    if(feeder2.length < 1 && carrier2.length > 0 && miner2.length > 0 && miner1.length > 0 && availableEnergy >= 550) {
+        var newName = 'feeder2' + Game.time;
+        console.log('Need new feeder2: ' + newName);
+        Game.spawns['Spawn1'].spawnCreep([CARRY,CARRY,CARRY,MOVE,MOVE,MOVE], newName, 
+            {memory: {role: 'feeder2'}});
     }
     
     // Spawn Builder small
@@ -274,11 +387,11 @@ module.exports.loop = function () {
         if(creep.memory.role == 'upgrader') {
             roleUpgrader.run(creep);
         }
-        if(creep.memory.role == 'fixit') {
-            roleFixit.run(creep);
-        }
 		if(creep.memory.role == 'feeder') {
 			roleFeeder.run(creep);
+		}
+		if(creep.memory.role == 'feeder2') {
+			roleFeeder2.run(creep);
 		}
 		if(creep.memory.role == 'fighter') {
 			roleFighter.run(creep);
